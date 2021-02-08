@@ -1,0 +1,32 @@
+---
+title: "day2"
+author: "Keyi Long"
+date: "2/4/2021"
+output: html_document
+---
+
+```{r}
+raw <- read.csv("./input/input2.txt", header = F)
+all <- strsplit(as.character(raw$V1), "x")
+## Part 1
+raw$l <- NULL
+raw$w <- NULL
+raw$h <- NULL
+raw$s <- NULL
+
+raw$c <- NULL
+for (i in 1:nrow(raw)) {
+  raw$l[i] <- as.numeric(all[[i]][1])
+  raw$w[i] <- as.numeric(all[[i]][2])
+  raw$h[i] <- as.numeric(all[[i]][3])
+  lwh <- c(raw$l[i], raw$w[i], raw$h[i])
+  raw$s[i] <- 2*(raw$l[i] * raw$h[i] + raw$l[i] * raw$w[i] + raw$w[i] * raw$h[i]) + sort(lwh)[1] * sort(lwh)[2]
+  
+  ## Part 2
+  raw$c[i] <- 2*(sort(lwh)[1] + sort(lwh)[2]) + raw$l[i] * raw$h[i] * raw$w[i]
+}
+
+sum(raw$s)
+sum(raw$c)
+```
+

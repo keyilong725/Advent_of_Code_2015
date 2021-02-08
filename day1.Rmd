@@ -1,0 +1,59 @@
+---
+title: "day1"
+author: "Keyi Long"
+date: "2/4/2021"
+output: html_document
+---
+
+## DAY 1
+
+```{r}
+# Read in data
+raw <- read.csv("./input/input1.txt", header = F)
+v <- as.vector(raw$V1)
+sst <- strsplit(v, "")[[1]]
+cnt <- table(sst)
+
+## Part 1
+# Count, ( goes up, ) goes down
+res <- cnt[[1]] - cnt[[2]] 
+res
+
+
+## Part 2
+# position i
+for (i in 1:length(sst)) {
+  string <- sst[1:i]
+  if (length(table(string)) == 2) {
+    pos <- table(string)[[1]] - table(string)[[2]] 
+    if (pos == -1) {
+      break
+      return(i)
+    }
+  }
+}
+i
+
+############ Method 2 ###############
+## Part 1 
+# Use 1 to substitute (
+t1 <- gsub("(?!\\))[[:punct:]]", 1, sst, perl=TRUE)
+# Use -1 to substitute )
+t2 <- gsub("[[:punct:]]", -1, t1, perl=TRUE)
+
+final <- as.numeric(t2)
+sum(final)
+
+## Part 2
+for (i in 1:length(final)) {
+  if (sum(final[1:i]) == -1) {
+    break
+    return(i)
+  }
+}
+```
+
+```{python}
+
+```
+
