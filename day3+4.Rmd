@@ -1,0 +1,116 @@
+---
+title: "day3"
+author: "Keyi Long"
+date: "2/7/2021"
+output: html_document
+---
+
+```{r}
+raw <- read.csv("./input/input3.txt", header = F)
+sst <- strsplit(as.vector(raw$V1), "")[[1]]
+
+# Part 1 
+# Starting point [0, 0] [pos1, pos2] 1: horizontal; 2: vertical
+pos1 <- 0
+pos2 <- 0
+pos <- as.list(rep(NULL, length(sst)))
+for (i in 1:length(sst)) {
+  if (sst[i] == ">") {
+    pos1 <- pos1 + 1
+  } else if (sst[i] == "<") {
+    pos1 <- pos1 - 1
+  } else if (sst[i] == "^") {
+    pos2 <- pos2 + 1
+  } else if (sst[i] == "v") {
+    pos2 <- pos2 - 1
+  }
+  pos[i] <- paste0(pos1, ",", pos2)
+}
+
+v <- as.vector(unlist(pos))
+res <- length(unique(v)) + (!"0,0" %in% v)
+res
+```
+
+
+```{r}
+# Part 2 
+# 8192 is even number, so two SANTAs take equal steps
+pos1 <- 0
+pos2 <- 0
+pos_santa <- as.list(rep(NULL, length(sst)/2))
+# sst_santa <- sst[135]
+for (i in 1:(length(sst)/2)) {
+  idx <- as.numeric(2*i - 1)
+  if (sst[idx] == ">") {
+    pos1 <- pos1 + 1
+  } else if (sst[idx] == "<") {
+    pos1 <- pos1 - 1
+  } else if (sst[idx] == "^") {
+    pos2 <- pos2 + 1
+  } else if (sst[idx] == "v") {
+    pos2 <- pos2 - 1
+  }
+  pos_santa[i] <- paste0(pos1, ",", pos2)
+}
+#######
+# sst <- sst[1:2]
+pos1 <- 0
+pos2 <- 0
+pos_robot <- as.list(rep(NULL, length(sst)/2))
+for (i in 1:(length(sst)/2)) {
+  idx <- as.numeric(2*i)
+  if (sst[idx] == ">") {
+    pos1 <- pos1 + 1
+  } else if (sst[idx] == "<") {
+    pos1 <- pos1 - 1
+  } else if (sst[idx] == "^") {
+    pos2 <- pos2 + 1
+  } else if (sst[idx] == "v") {
+    pos2 <- pos2 - 1
+  }
+  pos_robot[i] <- paste0(pos1, ",", pos2)
+}
+
+list <- list(unlist(pos_santa), unlist(pos_robot))
+v <- as.vector(unlist(list))
+res <- length(unique(v)) + (!"0,0" %in% v)
+res
+```
+
+# Day 4
+## MD hash
+```{r}
+openssl::md5("abcdef609043") #"000001dbbfa3a5c83a2d506429c7b00e"
+openssl::md5("pqrstuv1048970") #"000006136ef2ff3b291c85725f17325c"
+
+# for (i in 609042: 609045) {
+#   md5 <- openssl::md5(paste0("abcdef", i))
+#   if (substr(md5, 1, 5) == "00000") {
+#     return(i)
+#     break
+#   }
+# }
+
+# Part 1
+for (i in 1: 10000000) {
+  md5 <- openssl::md5(paste0("yzbqklnj", i))
+  if (substr(md5, 1, 5) == "00000") {
+    return(i)
+    break
+  }
+}
+i
+
+# Part 2
+for (i in 1: 10000000) {
+  md5 <- openssl::md5(paste0("yzbqklnj", i))
+  if (substr(md5, 1, 6) == "000000") {
+    return(i)
+    break
+  }
+}
+i
+```
+
+
